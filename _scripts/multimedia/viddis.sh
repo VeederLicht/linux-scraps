@@ -3,14 +3,14 @@
 clear
 
 # Define constants
-scriptv="v2.8.0-beta"
+scriptv="v2.9.0"
 sYe="\e[93m"
 sNo="\033[1;35m"
 
 # Show banner
 echo -e "\n ${sNo}"
 echo -e "  ========================================================VIDDIS==========================================================="
-echo -e "	 A video conversion and dissection batch script using ffmpeg, RickOrchard 2020, no copyright"
+echo -e "	 A video conversion and dissection batch script using ffmpeg, Copyleft Veederlicht 2020"
 echo -e "       -----------------------------------------------${sYe} $scriptv ${sNo}-------------------------------------------------"
 
 
@@ -50,19 +50,19 @@ function ask_convert_quality {		# ... picture quality
 	case $answer1 in
 		"0")
 			selection+="    -H264 Editing Quality \n"
-			outvid="-c:v libx264 -preset:v slow -profile:v high -tune grain -crf 18 -forced-idr true -c:a aac -b:a 384k"
-			outext="h264.m4v"
+			outvid="-c:v libx264 -preset:v slow -profile:v high -tune grain -crf 17 -forced-idr true -c:a flac"
+			outext="h264.mkv"
 			o_fl="-movflags frag_keyframe+empty_moov"
 			;;
 		"1")
 			selection+="   -H264 Good Quality \n"
-			outvid="-c:v libx264 -preset:v slow -profile:v high -crf 26 -c:a aac -b:a 256k"
+			outvid="-c:v libx264 -preset:v slow -profile:v high -crf 22 -c:a mp3 -b:a 256k"
 			outext="h264.mp4"
 			o_fl="-movflags +faststart"
 			;;
 		"2")
 			selection+="   -H264 Low Quality \n"
-			outvid="-c:v libx264 -preset:v medium -crf 32 -c:a aac -b:a 128k"
+			outvid="-c:v libx264 -preset:v medium -crf 28 -c:a mp3 -b:a 128k"
 			outext="h264.mp4"
 			o_fl="-movflags +faststart"
 			;;
@@ -80,13 +80,13 @@ function ask_convert_quality {		# ... picture quality
 			;;
 		"5")
 			selection+="   -H264 Good Quality (NVENC)\n"
-			outvid="-gpu 0 -c:v h264_nvenc -preset slow -profile:v high -cq 25 -c:a aac -b:a 192k"
+			outvid="-gpu 0 -c:v h264_nvenc -preset slow -profile:v high -cq 25 -c:a mp3 -b:a 256k"
 			outext="h264.mp4"
 			o_fl="-movflags +faststart"
 			;;
 		"6")
 			selection+="   -H265 Good Quality (NVENC)\n"
-			outvid="-gpu 0 -c:v hevc_nvenc -preset slow -tier high -cq 27 -c:a aac -b:a 192k"
+			outvid="-gpu 0 -c:v hevc_nvenc -preset slow -tier high -cq 27 -c:a mp3 -b:a 256k"
 			outext="h265.mp4"
 			o_fl="-movflags +faststart"
 			;;
@@ -163,8 +163,8 @@ function ask_aspect_ratio { 		# ... aspect ratio
 	echo -e "	[3] stretch 3:2			(Super8 film)"
 	echo -e "	[4] stretch 16:9		(HD)"
 	echo -e "	[5] stretch 18:9		(Univisium)"
-	echo -e "	[6] Resize 270p			(no aspect change)"
-	echo -e "	[7] Resize 540p			(no aspect change)"
+	echo -e "	[6] Resize 360p			(no aspect change)"
+	echo -e "	[7] Resize 720p			(no aspect change)"
 	echo -e "	[8] fixed 1080p 16:9	(HD)"
 	echo -e ""
 	read -p "Your selection: " answer1
@@ -189,10 +189,10 @@ function ask_aspect_ratio { 		# ... aspect ratio
 		f_ar="scale=ih*(18/9):ih,"
 		;;
 	  6)
-		f_ar="scale=-2:270,"
+		f_ar="scale=-2:350,"
 		;;
 	  7)
-		f_ar="scale=-2:540,"
+		f_ar="scale=-2:720,"
 		;;
 	  8)
 		f_ar="scale=1920:1080,"
