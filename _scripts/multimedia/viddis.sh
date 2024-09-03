@@ -189,7 +189,7 @@ function ask_aspect_ratio { 		# ... aspect ratio
 		f_ar="scale=ih*(18/9):ih,"
 		;;
 	  6)
-		f_ar="scale=-2:350,"
+		f_ar="scale=-2:360,"
 		;;
 	  7)
 		f_ar="scale=-2:720,"
