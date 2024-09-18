@@ -6,7 +6,7 @@ m_encoded_by='Converted with audconv.sh (veederlicht@github)'
 m_comment=''
 
 # Define constants
-scriptv="v1.7.1"
+scriptv="v2.0b"
 sYe="\e[93m"
 sNo="\033[1;35m"
 outdir=./$(date +%Y%m%d_%H.%M_)audconv
@@ -18,7 +18,7 @@ touch $logfile
 function showbanner {
 clear
 echo -e "${sNo}  ======================================================================================================="
-echo -e "       Batch convert audio, with options. Copyleft 2023 VeederLicht@Github"
+echo -e "       Batch convert audio, with options. Copyleft 2024444ederLicht@Github"
 echo -e "  --------------------------------------------${sYe} $scriptv ${sNo}----------------------------------------------------\n\n"
 }
 showbanner
@@ -32,10 +32,6 @@ if [ $# -eq 0 ]; then
 	echo "      ERROR:  No source files specified."
 	exit 2
 fi
-if ! command -v jq &> /dev/null; then
-	echo "      ERROR: This script relies on the program 'jq' (Command-line JSON processor). It could not be found, exiting..."
-	exit 2
-fi
 
 # !!!! ARGUMENTS IN DOUBLE QOUTES TO AVOID PROBLEMS WITH SPACES IN FILENAMES!!! https://stackoverflow.com/questions/12314451/accessing-bash-command-line-args-vs
 echo -e "  FILES TO BE PROCESSED:"
@@ -43,25 +39,9 @@ for f in "$@"; do
 	echo -e "    ➢➢  $f"
 done
 
-echo -e ""
-echo -e "  IS THIS CORRECT?"
-echo -e "   (0) no"
-echo -e "   (1) yes"
-echo -e ""
-read -p "      --> " iscorrect
-echo -e ""
 
-case $iscorrect in
-"0") exit 9 ;;
-"1") ;;
-*)
-	echo "Unknown option, exiting..."
-	exit 3
-	;;
-esac
 
 # ... SET CONVERT OPTIONS
-showbanner
 echo -e "\n ${sYe}  NOTE:"
 echo -e "       - metadata will be injected, to change it edit this scriptheader${sNo} \n"
 
@@ -142,12 +122,12 @@ case $answer_format in
 
 	1)
 		arg0b="[128k-"
-		arg1="-c:a libmp3lame -b:a 128k -compression_level 0"
+		arg1="-b:a 128k"
 		;;
 
 	2)
 		arg0b="[256k-"
-		arg1="-c:a libmp3lame -b:a 256k -compression_level 0"
+		arg1="-b:a 256k"
 		;;
 
 	esac
@@ -200,28 +180,6 @@ function addcomma {
 }
 
 
-# ... select noise reduction.........................................................................................
-echo -e "  SELECT NOISE SUPPRESSION "
-echo -e "   (0) none"
-echo -e "   (1) light (gate)"
-echo -e "   (2) strong (gate+anlmdn, slow!)"
-echo -e ""
-read -p "      --> " answer_noise
-echo -e ""
-
-case $answer_noise in
-"" | 0) ;;
-1)
-	afilt="compand=attacks=.01=decays=.01:points=-65/-90|-30/-30|-20/-18|0/0"
-	;;
-2)
-	afilt="compand=attacks=.01=decays=.01:points=-45/-900|-25/-25|-15/-13|0/0,anlmdn=s=0.3:p=0.05:r=0.006"
-	;;
-*)
-	echo "Unknown option, exiting..."
-	exit 3
-	;;
-esac
 
 # ... select frequencies.........................................................................................
 echo -e "  SELECT FREQUENCY CUTOUT:"
@@ -254,7 +212,7 @@ case $answer_noise in
 esac
 
 # ... select crystalizer .........................................................................................
-echo -e "  ENHANCE AUDIO CLARITY?"
+echo -e "  ENHANCE AUDIO (chrystalizer, compression, normalization)?"
 echo -e "     (0) no"
 echo -e "     (1) yes"
 echo -e ""
@@ -265,7 +223,7 @@ case $answer_crystalizer in
 "" | 0) ;;
 1)
 	addcomma
-	afilt=$afilt"crystalizer"
+	afilt=$afilt"compand=attacks=.01=decays=.01:points=-50/-90|-30/-30|-20/-18|0/0,crystalizer,speechnorm=e=1:c=1:r=0"
 	;;
 *)
 	echo "Unknown option, exiting..."
@@ -273,25 +231,6 @@ case $answer_crystalizer in
 	;;
 esac
 
-# ... select extra bass .........................................................................................
-echo -e "  BASSBOOST?"
-echo -e "     (0) no"
-echo -e "     (1) yes"
-echo -e ""
-read -p "      --> " answer_bass
-echo -e ""
-
-case $answer_bass in
-"" | 0) ;;
-1)
-	addcomma
-	afilt=$afilt"bass=gain=5"
-	;;
-*)
-	echo "Unknown option, exiting..."
-	exit 3
-	;;
-esac
 
 # ... select extrastereo .........................................................................................
 echo -e "  ENHANCE STEREO EFFECT?"
@@ -313,26 +252,6 @@ case $answer_stereo in
 	;;
 esac
 
-# ... select normalization .........................................................................................
-echo -e "  APPLY LOUDNESS NORMALIZATION? (EBU_R128) [cpu-intensive, may distort audio]"
-echo -e "     (0) no"
-echo -e "     (1) yes"
-echo -e ""
-read -p "      --> " answer_loudnorm
-echo -e ""
-
-case $answer_loudnorm in
-"")
-	answer_loudnorm=0
-	;;
-0 | 1) ;;
-*)
-	echo "Unknown option, exiting..."
-	exit 3
-	;;
-esac
-echo -e "  -----------------Apply loudness normalization: $answer_loudnorm \n" >>$logfile
-
 
 # ... select length.........................................................................................
 echo -e "  SELECT LENGTH: "
@@ -343,7 +262,7 @@ echo -e ""
 read -p "       Select processing length: " answer1
 
 case $answer1 in
-0)
+"" | 0)
 	arg4=""
 	arg5=""
 	;;
@@ -371,22 +290,6 @@ for f in "$@"; do
 
 	echo -e ""
 	echo -e "\n\n........................Processing "$f" ...to... $outfile" | tee -a $logfile
-
-	if [[ $answer_loudnorm -eq 1 ]]; then
-		# first the file-analysis for double pass EBU R128, EXCLUDING SELECTED FILTERS  (in order to meet the exact EBU_R128 specs, the loudnorm should be again performed after applying the filters, but the audio also needs to be normalized before applying the compand filter in order to achieve predictable results....
-		#    EBU_R128="loudnorm=I=-23:LRA=7:tp=-1"
-		EBU_R128="loudnorm=I=-16:LRA=11:tp=-4"
-		ffmpeg -hide_banner -nostats -i "$f" -af $EBU_R128:print_format=json -f null - 2>ffmpeg.log
-		tail -n 12 ffmpeg.log >ffmpeg.json
-		jq_i=$(jq '.input_i' ffmpeg.json | sed 's/\"//g')
-		jq_tp=$(jq '.input_tp' ffmpeg.json | sed 's/\"//g')
-		jq_lra=$(jq '.input_lra' ffmpeg.json | sed 's/\"//g')
-		jq_thres=$(jq '.input_thresh' ffmpeg.json | sed 's/\"//g')
-		jq_offs=$(jq '.target_offset' ffmpeg.json | sed 's/\"//g')
-		EBU_R128=$EBU_R128":measured_I=$jq_i:measured_LRA=$jq_lra:measured_tp=$jq_tp:measured_thresh=$jq_thres:offset=$jq_offs"
-		afilt=$EBU_R128$afilt
-		echo -e "........................Filter string with EBU_R128: $afilt" | tee -a $logfile
-	fi
 
 	if [[ -n $afilt ]]; then
 		afilt="-af "$afilt
