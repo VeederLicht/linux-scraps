@@ -18,7 +18,7 @@ touch $logfile
 function showbanner {
 clear
 echo -e "${sNo}  ======================================================================================================="
-echo -e "       Batch convert audio, with options. Copyleft 2024444ederLicht@Github"
+echo -e "       Batch convert audio, with options. Copyleft 2024 VeederLicht@Github"
 echo -e "  --------------------------------------------${sYe} $scriptv ${sNo}----------------------------------------------------\n\n"
 }
 showbanner
