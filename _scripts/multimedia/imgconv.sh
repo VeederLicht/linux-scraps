@@ -21,7 +21,7 @@ fi
 
 ####################  INITIALISATION & DEFINITIONS  ############################
 # Define constants
-scriptv="v2.9.0"
+scriptv="v3.0.0b"
 sYe="\e[93m"
 sNo="\033[1;35m"
 basedir="./imgconv_"$(date "+%Y%m%d%H%S")
@@ -36,7 +36,7 @@ function show_banner {
 	clear
 	echo -e "\n ${sNo}"
 	echo -e "  ===========================================IMGCONV================================================="
-	echo -e "                Batch convert images using EXIF-data, Copyleft 2023 VeederLicht"
+	echo -e "                Batch convert images using EXIF-data, Copyleft 2024 VeederLicht"
 	echo -e "  --------------------------------------------${sYe} $scriptv ${sNo}----------------------------------------------------"
 	echo -e "\n ${sYe}  NOTE: metadata will be injected, to change it edit this scriptheader!  ${sNo} \n\n"
 }
@@ -506,7 +506,7 @@ do
 		infile="$f"
 	fi
 	
-	convert "$infile" -auto-orient $arg1 $arg3 $arg4 $arg2 $arg6 $arg9 -verbose "$outfile" | tee -a "${logfile}"
+	magick "$infile" -auto-orient $arg1 $arg3 $arg4 $arg2 $arg6 $arg9 -verbose "$outfile" | tee -a "${logfile}"
 	rm -f tmp.png
 
 	if [[ $retain_meta -eq 0 ]]; then
@@ -518,7 +518,7 @@ do
 		exiv2 -d a "$outfile" | tee -a "${logfile}"
 	fi
 done
-
+rm -rf "${basedir}"/*_original
 
 
 echo -e "\n\n  ---------------------------------------------END-------------------------------------------------------\n" >> $logfile
