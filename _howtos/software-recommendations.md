@@ -36,7 +36,8 @@
     . qCamera (webcam test)
     . qTorrent/ (download tool)
     . variety (background changer)
-    . neofetch (terminal systeminfo)
+    . fastfetch (terminal systeminfo)
+    . amdgpu_top  (resource viewer voor AMD GPU's)
     
     
     ### DOCS & DEV
