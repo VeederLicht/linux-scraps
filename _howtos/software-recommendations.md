@@ -38,6 +38,7 @@
     . variety (background changer)
     . fastfetch (terminal systeminfo)
     . amdgpu_top  (resource viewer voor AMD GPU's)
+    . gpu-viewer  (frontend voor glxinfo en vulkaninfo)
     
     
     ### DOCS & DEV
