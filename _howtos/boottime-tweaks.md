@@ -8,7 +8,7 @@ alias list="ls -g --group-directories-first --sort=time --human-readable"
 # COLORFULL PROMPT
 PS1="\n\n\n\`if [[ \$? = "0" ]]; then echo "\\[\\033[42m\\]"; else echo "\\[\\033[101m\\]"; fi\`\!\e[95m\e[45m  \$(/bin/date)   ---   [\u@\h] \e[0m\e[35m\e[105m\$(git branch 2>/dev/null | grep '^*' | colrm 1 2)\e[49m\e[35m\n  Current Path: \[\033[93m\]\w/\n\[\033[1;33m\]  ⇒  \[\033[0m\]"
 # SYSINFO
-neofetch
+fastfetch
 ```
 
 ## 2. NANORC
@@ -49,7 +49,6 @@ set minibar         # Displays file name and other information in the bottom bar
 #set nohelp          # Disable the help information (CTRL+G to view the help screen).
 set softwrap        # Enable softwrap of lines.
 set atblanks        # wrap line at blanks.
-set suspend         # Enables CTRL+Z to suspend nano.
 #set tabstospaces    # Converts TAB key press to spaces.
 #set tabsize 4       # Sets tab-to-spaces size to 4.
 set mouse
