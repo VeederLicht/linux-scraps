@@ -113,6 +113,39 @@ Set comma (for european models):
 
 ## APPENDIX: ARCH / MANJARO
 
+> Nuttige programmas om meteen na installatie te installeren
+```
+sudo systemctl enable --now avahi-daemon.service
+sudo systemctl enable --now avahi-daemon.socket
+avahi-browse --all --terminate
+sudo pacman -S epiphany cups cups-pdf
+sudo systemctl enable --now cups.service
+
+sudo pacman -S bluez bluez-utils
+sudo systemctl enable --now bluetooth.service
+
+sudo pacman -S ttf-liberation
+sudo pacman -S ttf-ibm-plex gnu-free-fonts
+sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+yay -S ttf-ms-fonts
+sudo pacman -S bash-completion
+
+sudo pacman -S breeze-gtk 7zip unzip breeze-icons imagemagick ffmpeg ibheif libraw libwmf
+
+
+sudo pacman -S nemo-fileroller nemo-preview nemo-emblems nemo-audio-tab cinnamon-translations 
+
+
+sudo pacman -S gnome-calculator gnome-system-monitor gnome-font-viewer gnome-keyring gnome-characters gucharmap gedit gnome-software gnumeric gnome-disk-utility gnome-tweaks gnome-sound-recorder gnome-bluetooth-3.0 gnome-control-center 
+sudo pacman -S resources 
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+
+
+yay -S microsoft-edge-beta-bin 
+yay -S fastfetch
+sudo pacman -S audacity audacious
+```
+
 > MAKEPKG duurt te lang om telkens te comprimeren » uitschakelen in /etc/makepkg.conf:
 ```
 #PKGEXT='.pkg.tar.xz'
