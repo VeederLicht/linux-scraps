@@ -1,0 +1,34 @@
+######## MAILS DECOMPRESSION BENCHMARK ###############
+
+size compressed: 997.144 KB
+file count: 15.282
+------------------------------------------------------
+
+$ time python3 decompress-mails.py
+
+real    0m13.001s
+user    0m3.639s
+sys     0m4.179s
+
+folder size: 1.642.208 KB
+------------------------------------------------------
+
+$ ./decompress-mails-c
+
+real    0m12.058s
+user    0m2.272s
+sys     0m3.955s
+
+folder size: 1.642.204 KB
+------------------------------------------------------
+
+$ ./decompress-mails-cpp
+
+real    0m12.153s
+user    0m2.494s
+sys     0m3.776s
+
+folder size: 1.642.204 KB
+######################################################
+
+

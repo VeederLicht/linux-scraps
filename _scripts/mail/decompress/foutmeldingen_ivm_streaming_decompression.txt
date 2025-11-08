@@ -1,0 +1,7 @@
+Ik krijg de volgende foutmeldingen met de respectieve scripts:
+
+C: '[FOUT] Ongeldig zstd-frame: ...'
+CPP: '[FOUT] Onbekende decompressiegrootte: ...'
+Python: '[FOUT] ... decompress error: could not determine content size in frame header'
+
+Maar als ik het bestand op de terminal uitpak met 'zstd -d ...' dan gaat alles prima. Wat kan hier aan de hand zijn?
