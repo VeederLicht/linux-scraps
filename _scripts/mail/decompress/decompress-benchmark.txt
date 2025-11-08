@@ -6,11 +6,11 @@ file count: 15.282
 
 $ time python3 decompress-mails.py
 
-real    0m13.001s
-user    0m3.639s
-sys     0m4.179s
+real    0m15.237s
+user    0m3.920s
+sys     0m4.523s
 
-folder size: 1.642.208 KB
+folder size: 1.642.204 KB
 ------------------------------------------------------
 
 $ ./decompress-mails-c
@@ -29,6 +29,25 @@ user    0m2.494s
 sys     0m3.776s
 
 folder size: 1.642.204 KB
+
+------------------------------------------------------
+
+$ ./decompress-mails.sh
+
+real    2m6.697s
+user    0m24.599s
+sys     1m28.414s
+
+folder size: 1.642.208 KB
+------------------------------------------------------
+
+$ ./decompress-mails.php
+
+real    1m48.343s
+user    0m23.321s
+sys     1m10.952s
+
+folder size: 1.642.208 KB
 ######################################################
 
 
