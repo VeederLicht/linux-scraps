@@ -21,7 +21,10 @@ n_skipped = 0
 
 # ####################################################################
 # Processess a single email file to extract 'From' and 'Date' headers
-def process_email_file(filepath, mode):
+def process_email_file(filepath, mode, hostname):
+    if not hostname:
+    	hostname=socket.gethostname()
+    	
     global n_success, n_failure, n_skipped
     try:
         with open(filepath, "rb") as f:
@@ -75,7 +78,6 @@ def process_email_file(filepath, mode):
             # Maildir formaat: timestamp.MillisecondsPadded-UniqueID.Hostname
             size_S= os.path.getsize(filepath)
             unique_id = f"M{random.randint(100000,999999)}P{random.randint(100000,999999)}"
-            hostname = socket.gethostname()
             new_filename = f"{timestamp}.{unique_id}.{hostname},S={size_S},W={size_S}:2,S"
         case _:
             logging.info(f"[ERROR]  unknown mode: {mode}")
@@ -96,8 +98,8 @@ def process_email_file(filepath, mode):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print(f"Use: {sys.argv[0]} <mode> <startdir>")
+    if len(sys.argv) < 3:
+        print(f"Use: {sys.argv[0]} <mode> <startdir> [<hostname>]")
         sys.exit(1)
 
     modes = ["maildir", "dryrun", "natural"]
@@ -108,13 +110,16 @@ if __name__ == "__main__":
     print("\n\n --------------------------  RENAME EMAILS  -------------------------- \n\n")
     logging.info("--------------------------------- Start renaming emails")
 
+    hostn = sys.argv[3] if (len(sys.argv) == 4) else ""
+    	
     for root, dirs, files in os.walk(sys.argv[2]):
         for name in files:
             filepath = os.path.join(root, name)
-            process_email_file(filepath, sys.argv[1])
+            process_email_file(filepath, sys.argv[1], hostn)
     
     logging.info(f"-------------------------- Renaming complete: {n_success} success, {n_failure} failure, {n_skipped} skipped")
-    print(f"    Renaming complete: {n_success} success, {n_failure} failure, {n_skipped} skipped\n\n")
+    print(f"    Renaming complete: {n_success} success, {n_failure} failure, {n_skipped} skipped\n")
+    print(f"      For details see the logfile in this directory.\n\n")
 
 
 
