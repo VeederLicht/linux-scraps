@@ -30,5 +30,7 @@ https://trac.ffmpeg.org/wiki/Capture/PulseAudio
 AANBEVOLEN:
 
 `ffmpeg -f v4l2 -input_format yuyv422 -framerate 30 -video_size 1280x720  -i /dev/video0 -f pulse -i default -vf unsharp=3:3:1,setsar=1:1 -c:v libsvtav1 -pix_fmt yuv420p10le -crf 35 -preset 7 -c:a libopus -ac 1 -b:a 64k -af "highpass=f=200,compand=attacks=.01=decays=.01:points=-65/-90|-30/-30|-20/-18|0/0,crystalizer,speechnorm=e=3:r=0.00001:l=1" out720@30_av1-yuyv422.webm -y`
+
 of
+
 `ffmpeg -f v4l2 -input_format yuyv422 -framerate 30 -video_size 1920x1080  -i /dev/video0 -f pulse -i default -vf unsharp=5:5:1,setsar=1:1 -c:v libsvtav1 -pix_fmt yuv420p10le -crf 35 -preset 7 -c:a libopus -ac 1 -b:a 64k -af "highpass=f=200,compand=attacks=.01=decays=.01:points=-65/-90|-30/-30|-20/-18|0/0,crystalizer,speechnorm=e=3:r=0.00001:l=1" out1080@30_av1-yuyv422.webm -y`
