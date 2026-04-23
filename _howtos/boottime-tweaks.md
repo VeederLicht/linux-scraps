@@ -14,13 +14,14 @@ of
 
 ```
 PS1='\n\n\n________________________________________________________________\n\[\033[38;2;166;227;161m\]\u\[\033[0m\]@\[\033[38;2;137;180;250m\]\h\[\033[0m\]:\[\033[38;2;249;226;175m\]\w\[\033[0m\]\[\033[38;2;205;214;244m\]\$ \[\033[0m\]'
-
-alias l='ls -CF'
-alias la='ls -A'
-alias ll='ls -alF'
-# This will turn on color option for GNU/Linux ls
-alias ls='ls -al --color=auto'
 ```
+of 
+
+```
+inxi -S
+PS1='\n\n\n\[\033[3;100;37m\]$?_______\u@\h___________\w\[\033[K\]\n\[\033[0m\]»»»'
+```
+
 
 ## 2. NANORC
 > maak .nanorc aan in ~ met de volgende inhoud:
