@@ -26,6 +26,7 @@ https://trac.ffmpeg.org/wiki/Capture/PulseAudio
 * Voor de input format levert NV12 een iets lagere hoeveelheid data dan YUYV422 (ca 80%). > Toch lijkt YUYV422 de best comprimeerbare stream op te leveren!
 * Pixel format yuv422p10le lijkt alleen mogelijk met FFMPEG wanneer gecompileert met speciale vlaggen. Maar **yuv420p10le** is ook prima, stukken beter dan yuv422p sowieso. 
 * 1080P levert een dubbel zo grote eindstroom op als 720P, de kwaliteit is echter niet zoveel merkbaar beter (subjectief).
+* Om te donkere stukken op te lichten zonder de rest aan te tasten (dynamic range) kan je -vf "lutyuv=y=gammaval(0.8)" gebruiken, waarbij een lager getal een hogere lichtheid aanduid.
 
 AANBEVOLEN:
 
